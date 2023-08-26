@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Recognition</title>
+</head>
+<body>
+    <h1>What Is It Looks Like!!!!</h1>
+    <p>Welcome to the system to recognise what you see</p>
+    <form>
+        <input type="file" id="Image">
+            <button type="submit" id="submit">Process</button>
+    </form>
+    <h2 id="info"></h2>
+</body>
+</html>
+<script>
+    const form = document.querySelector('form');
+    const inputImage = document.querySelector('#Image');
+    const processButton = document.querySelector('#submit');
+    const info = document.querySelector('#info');
+    const url = 'http://localhost:3000/image';
+
+    processButton.addEventListener('click',async (event)=>{
+        info.textContent = 'loading....';
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('image',inputImage.files[0]);
+
+        const response = await fetch(url,{
+            method: 'POST',
+            body:formData
+        });
+
+        const imageResult = await response.json();
+        console.log(imageResult);
+        info.textContent = imageResult.label;
+    })
+</script>
